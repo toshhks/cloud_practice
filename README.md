@@ -14,6 +14,12 @@ UI: http://localhost:8081, user `airflow`, password `airflow`. Host port 8081 ke
 
 The Airflow service account key is not part of the image. After Terraform creates `weather-airflow`, save it as `.secrets/airflow-sa.json`. Compose mounts that directory read-only and sets `GOOGLE_APPLICATION_CREDENTIALS` inside the container. The UI still starts if the file is missing. GCP calls from a DAG need the real key.
 
+## Operations
+
+- [Create the project and apply Terraform](docs/setup.md)
+- [Load the secret, run the scheduler, and trigger the DAG](docs/run.md)
+- [Delete the cloud resources and stop billing](docs/teardown.md)
+
 ## Branches
 
 `feature/...` branches are cut from `develop` and merged back with `--no-ff`. `develop` merges into `main` once, after evidence is in.
