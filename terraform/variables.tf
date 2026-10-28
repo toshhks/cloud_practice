@@ -69,6 +69,17 @@ variable "force_destroy" {
   default     = false
 }
 
+variable "airflow_impersonator" {
+  description = "IAM member allowed to mint tokens for the Airflow service account, for example user:you@gmail.com. Empty skips the binding. New projects block JSON keys, so local Airflow uses this instead."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.airflow_impersonator == "" || can(regex("^(user|group|serviceAccount):.+$", var.airflow_impersonator))
+    error_message = "airflow_impersonator must be empty or a member such as user:you@gmail.com."
+  }
+}
+
 locals {
   labels = {
     environment = var.env

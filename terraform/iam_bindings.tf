@@ -102,6 +102,13 @@ resource "google_storage_bucket_iam_member" "build_source_reader" {
   }
 }
 
+resource "google_service_account_iam_member" "airflow_token_creator" {
+  count              = var.airflow_impersonator == "" ? 0 : 1
+  service_account_id = google_service_account.airflow.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = var.airflow_impersonator
+}
+
 resource "google_service_account_iam_member" "build_acts_as_ingest" {
   service_account_id = google_service_account.ingest.name
   role               = "roles/iam.serviceAccountUser"
