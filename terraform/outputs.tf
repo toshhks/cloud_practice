@@ -54,12 +54,12 @@ output "scheduler_job_name" {
   value       = local.scheduler_job_name
 }
 
-output "service_account_ids" {
-  description = "Account ids for the four service accounts. Emails appear once the accounts exist."
+output "service_account_emails" {
+  description = "Service account emails. The scheduler account has no roles until the function exists."
   value = {
-    ingest    = local.ingest_sa_account_id
-    scheduler = local.scheduler_sa_account_id
-    airflow   = local.airflow_sa_account_id
-    build     = local.build_sa_account_id
+    ingest    = google_service_account.ingest.email
+    scheduler = google_service_account.scheduler.email
+    airflow   = google_service_account.airflow.email
+    build     = google_service_account.build.email
   }
 }
