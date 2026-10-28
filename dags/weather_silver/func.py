@@ -27,13 +27,28 @@ def resolve_source_prefix(**context) -> dict:
     }
 
 
-def write_silver_csv(**context) -> dict:
+def _storage_client(settings):
+    import google.auth
+    from google.auth import impersonated_credentials
     from google.cloud import storage
 
+    source_credentials, _ = google.auth.default(
+        scopes=["https://www.googleapis.com/auth/cloud-platform"]
+    )
+    credentials = impersonated_credentials.Credentials(
+        source_credentials=source_credentials,
+        target_principal=settings.airflow_principal,
+        target_scopes=["https://www.googleapis.com/auth/cloud-platform"],
+        lifetime=3600,
+    )
+    return storage.Client(credentials=credentials, project=settings.project_id)
+
+
+def write_silver_csv(**context) -> dict:
     source = context["ti"].xcom_pull(task_ids="resolve_source_prefix")
     settings = load_settings()
     ingested_at = datetime.now(timezone.utc)
-    client = storage.Client()
+    client = _storage_client(settings)
     bucket = client.bucket(source["bucket"])
     blobs = [
         blob

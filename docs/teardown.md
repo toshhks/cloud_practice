@@ -16,14 +16,14 @@ bq update --table --deletion_protection=false YOUR_PROJECT_ID:weather_dev.realti
 bq rm --force --table YOUR_PROJECT_ID:weather_dev.realtime_gold
 ```
 
-Destroy the stack and remove the local key:
+Destroy the stack and remove the local login copy:
 
 ```bash
 terraform -chdir=terraform destroy
-rm -f .secrets/airflow-sa.json
+rm -f .secrets/adc.json
 docker compose down
 ```
 
 In the Google Cloud console, unlink billing from the project or close the billing account. The Free Trial card stays chargeable until billing is disabled, even after the resources are gone.
 
-Also delete the Airflow service account key in IAM if the console still lists it. The tomorrow.io key was only a secret version and disappears with the secret during destroy.
+There is no Airflow service account key to delete. The tomorrow.io key was only a secret version and disappears with the secret during destroy.

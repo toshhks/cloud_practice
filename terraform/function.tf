@@ -54,5 +54,8 @@ resource "google_cloudfunctions2_function" "ingest" {
     }
   }
 
-  depends_on = [google_project_service.required]
+  depends_on = [
+    google_project_service.required,
+    google_storage_bucket_iam_member.build_gcf_sources_reader,
+  ]
 }

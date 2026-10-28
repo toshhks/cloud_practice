@@ -2,17 +2,16 @@
 
 Run this after [setup](setup.md). The tomorrow.io key is already in Secret Manager. This page adds the Airflow key, writes one bronze file, and loads silver plus gold.
 
-## Airflow key
+## Airflow identity
 
-The email is the `airflow` value of `service_account_emails`. With the default names it is `weather-airflow@YOUR_PROJECT_ID.iam.gserviceaccount.com`.
+`gcloud iam service-accounts keys create` fails here. The project enforces `constraints/iam.disableServiceAccountKeyCreation`, so there is no JSON key to download. Terraform grants your user `roles/iam.serviceAccountTokenCreator` on `weather-airflow`. The DAG and the Google connection impersonate that account. Your login only mints the token.
 
 ```bash
 mkdir -p .secrets
-gcloud iam service-accounts keys create .secrets/airflow-sa.json \
-  --iam-account=weather-airflow@YOUR_PROJECT_ID.iam.gserviceaccount.com
+cp "$HOME/.config/gcloud/application_default_credentials.json" .secrets/adc.json
 ```
 
-The file stays out of git. Recreate the local stack so the container picks up the key and `GCP_PROJECT_ID`:
+The copy stays out of git. Recreate the local stack so the container picks up the file and `GCP_PROJECT_ID`:
 
 ```bash
 docker compose up -d
