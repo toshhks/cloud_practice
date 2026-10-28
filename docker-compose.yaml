@@ -8,6 +8,13 @@ x-airflow-common: &airflow-common
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     # Host path in .env is for tools on the machine. Inside the container the key is mounted here.
     GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/secrets/airflow-sa.json
+    AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: google-cloud-platform://?extra__google_cloud_platform__key_path=%2Fopt%2Fairflow%2Fsecrets%2Fairflow-sa.json
+    GCP_PROJECT_ID: ${GCP_PROJECT_ID:-}
+    WEATHER_ENV: ${WEATHER_ENV:-dev}
+    WEATHER_LOCATION_SLUG: ${WEATHER_LOCATION_SLUG:-minsk}
+    WEATHER_BUCKET: ${WEATHER_BUCKET:-}
+    WEATHER_DATASET: ${WEATHER_DATASET:-}
+    WEATHER_TABLE: ${WEATHER_TABLE:-realtime_gold}
   volumes:
     - ./dags:/opt/airflow/dags
     - ./.secrets:/opt/airflow/secrets:ro
