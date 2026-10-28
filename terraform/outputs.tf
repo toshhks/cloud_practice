@@ -25,23 +25,23 @@ output "region" {
 }
 
 output "bucket_name" {
-  description = "Data bucket name. The bucket itself is created in a later change."
-  value       = local.bucket_name
+  description = "GCS bucket for bronze JSON and silver CSV."
+  value       = google_storage_bucket.weather.name
 }
 
 output "secret_id" {
-  description = "Secret Manager id for the tomorrow.io API key. No secret version is stored here."
-  value       = local.secret_id
+  description = "Secret Manager id for the tomorrow.io API key. The version is added outside Terraform."
+  value       = google_secret_manager_secret.tomorrow_api_key.secret_id
 }
 
 output "bigquery_dataset_id" {
-  description = "BigQuery dataset id for the gold table."
-  value       = local.dataset_id
+  description = "BigQuery dataset that holds the gold table."
+  value       = google_bigquery_dataset.weather.dataset_id
 }
 
 output "bigquery_table_id" {
   description = "BigQuery gold table id."
-  value       = "${local.dataset_id}.${local.table_id}"
+  value       = "${google_bigquery_dataset.weather.dataset_id}.${google_bigquery_table.realtime_gold.table_id}"
 }
 
 output "function_name" {
