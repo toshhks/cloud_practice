@@ -1,0 +1,9 @@
+project_id     = "your-gcp-project-id"
+region         = "europe-west1"
+env            = "dev"
+owner          = "cloud-practice"
+location_slug  = "minsk"
+location_query = "53.9,27.57"
+force_destroy = false
+# User who may mint tokens for weather-airflow. Leave unset until the project exists.
+# airflow_impersonator = "user:you@gmail.com"

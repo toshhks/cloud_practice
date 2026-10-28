@@ -1,1 +1,35 @@
-# cloud_practice
+# Weather pipeline
+
+Raw tomorrow.io responses land in GCS bronze as JSON. Local Airflow validates the previous UTC hour, writes a silver CSV, and appends the same rows to a BigQuery gold table. Terraform provisions the cloud side. Secrets stay in Secret Manager.
+
+## Local Airflow
+
+Postgres data and Airflow logs stay in Docker volumes. The DAGs directory is the only project path mounted from this disk.
+
+```bash
+docker compose up -d --build
+```
+
+UI: http://localhost:8081, user `airflow`, password `airflow`.
+
+This project blocks service account JSON keys. Local Airflow uses your user login only to mint a short-lived token for `weather-airflow`. Copy `~/.config/gcloud/application_default_credentials.json` to `.secrets/adc.json` after `gcloud auth application-default login`. Compose mounts that file read-only. The UI still starts if the file is missing. GCP calls from a DAG need it.
+
+## Operations
+
+- [Create the project and apply Terraform](docs/setup.md)
+- [Load the secret, run the scheduler, and trigger the DAG](docs/run.md)
+- [Delete the cloud resources and stop billing](docs/teardown.md)
+
+## Branches
+
+`feature/...` branches are cut from `develop` and merged back with `--no-ff`. `develop` merges into `main` once, after evidence is in.
+
+1. `feature/repo-baseline`
+2. `feature/terraform-foundation`
+3. `feature/data-stores`
+4. `feature/iam`
+5. `feature/weather-ingest`
+6. `feature/local-airflow`
+7. `feature/silver-processing`
+8. `feature/runbook`
+9. `feature/evidence`

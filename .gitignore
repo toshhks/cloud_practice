@@ -1,0 +1,25 @@
+# Local env. The example file is safe to commit.
+.env
+.env.*
+!.env.example
+
+# Service account keys and other local secrets.
+.secrets/
+
+# Terraform values and local state. Example variable files stay tracked.
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform/.build/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Airflow logs, if they ever land on this disk.
+logs/
+*.log
