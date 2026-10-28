@@ -8,6 +8,7 @@ locals {
     "run.googleapis.com",
     "artifactregistry.googleapis.com",
     "cloudscheduler.googleapis.com",
+    "eventarc.googleapis.com",
     "iam.googleapis.com",
   ])
 }
