@@ -52,6 +52,11 @@ class Settings:
     def destination_table(self) -> str:
         return f"{self.project_id}.{self.dataset}.{self.table}"
 
+    @property
+    def airflow_principal(self) -> str:
+        configured = os.environ.get("WEATHER_AIRFLOW_SA", "").strip()
+        return configured or f"weather-airflow@{self.project_id}.iam.gserviceaccount.com"
+
 
 def load_settings() -> Settings:
     """Read runtime settings. Called from tasks, not while the scheduler parses the DAG."""
