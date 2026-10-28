@@ -31,6 +31,8 @@ sudo apt-get update
 sudo apt-get install -y google-cloud-cli terraform
 ```
 
+If this Ubuntu release is missing from the HashiCorp apt repo, `terraform` will not be found. Install a 1.6+ binary from the HashiCorp release archive and put it on `PATH`. `google-cloud-cli` still comes from the Google apt repo above.
+
 Sign in and select the project:
 
 ```bash

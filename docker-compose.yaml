@@ -4,6 +4,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
     AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:-46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=}
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     # User ADC, not a service account key. The project blocks key creation.
@@ -11,6 +12,7 @@ x-airflow-common: &airflow-common
     GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/secrets/adc.json
     AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: google-cloud-platform://?extra__google_cloud_platform__impersonation_chain=weather-airflow%40${GCP_PROJECT_ID}.iam.gserviceaccount.com
     GCP_PROJECT_ID: ${GCP_PROJECT_ID:-}
+    GOOGLE_CLOUD_PROJECT: ${GCP_PROJECT_ID:-}
     WEATHER_ENV: ${WEATHER_ENV:-dev}
     WEATHER_LOCATION_SLUG: ${WEATHER_LOCATION_SLUG:-minsk}
     WEATHER_BUCKET: ${WEATHER_BUCKET:-}
