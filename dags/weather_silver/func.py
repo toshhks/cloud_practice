@@ -69,7 +69,12 @@ def write_silver_csv(**context) -> dict:
             LOGGER.warning("Skipped %s: invalid JSON (%s)", source_object, exc)
             continue
 
-        row, reason = flatten_record(payload, source_object, ingested_at)
+        row, reason = flatten_record(
+            payload,
+            source_object,
+            ingested_at,
+            location_slug=settings.location_slug,
+        )
         if row is None:
             rejected += 1
             LOGGER.warning("Skipped %s: %s", source_object, reason)
@@ -105,7 +110,12 @@ def write_silver_csv(**context) -> dict:
     }
 
 
-def flatten_record(payload, source_object: str, ingested_at: datetime) -> tuple[dict | None, str | None]:
+def flatten_record(
+    payload,
+    source_object: str,
+    ingested_at: datetime,
+    location_slug: str = "",
+) -> tuple[dict | None, str | None]:
     if not isinstance(payload, dict):
         return None, "payload is not a JSON object"
     data = payload.get("data")
@@ -118,8 +128,13 @@ def flatten_record(payload, source_object: str, ingested_at: datetime) -> tuple[
     if not isinstance(values, dict):
         return None, "data.values is missing or is not an object"
 
-    location_name = location.get("name")
-    if not isinstance(location_name, str) or not location_name.strip():
+    raw_name = location.get("name")
+    if isinstance(raw_name, str) and raw_name.strip():
+        location_name = raw_name.strip()
+    elif location_slug.strip():
+        # A lat,lon query returns coordinates only. The slug is the configured place name.
+        location_name = location_slug.strip()
+    else:
         return None, "location.name is required"
     event_time = _timestamp(data.get("time"))
     if event_time is None:
