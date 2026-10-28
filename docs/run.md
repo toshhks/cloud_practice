@@ -1,6 +1,6 @@
 # Secret, scheduler, and the silver DAG
 
-Run this after [setup](setup.md). The tomorrow.io key is already in Secret Manager. This page adds the Airflow key, writes one bronze file, and loads silver plus gold.
+Run this after [setup](setup.md). The tomorrow.io key is already in Secret Manager. This page starts local Airflow, writes one bronze file, and loads silver plus gold.
 
 ## Airflow identity
 
@@ -17,9 +17,7 @@ The copy stays out of git. Recreate the local stack so the container picks up th
 docker compose up -d
 ```
 
-UI: http://localhost:8081, user `airflow`, password `airflow`.
-
-This repository sits on the external disk `Новый том`. Docker Desktop does not share that disk by default, so the container's `dags/` directory stays empty and the DAG never appears. Share the disk in Docker Desktop under Settings, Resources, File sharing, then run `docker compose up -d` again.
+UI: http://localhost:8081, user `airflow`, password `airflow`. The DAG name in the UI is `weather silver processing`.
 
 ## One bronze file
 

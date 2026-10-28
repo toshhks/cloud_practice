@@ -10,6 +10,7 @@ from weather_silver.func import resolve_source_prefix, write_silver_csv
 
 with DAG(
     dag_id=DAG_ID,
+    dag_display_name=DAG_DESCRIPTION,
     description=DAG_DESCRIPTION,
     start_date=datetime(2026, 1, 1),
     schedule=None,

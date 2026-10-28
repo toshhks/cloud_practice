@@ -16,7 +16,7 @@ locals {
       name        = "location_name"
       type        = "STRING"
       mode        = "REQUIRED"
-      description = "Location name from the weather payload."
+      description = "Place name from the payload, or the location slug when the payload only has coordinates."
     },
     {
       name        = "location_lat"
