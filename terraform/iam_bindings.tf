@@ -81,6 +81,12 @@ resource "google_project_iam_member" "build_artifact_writer" {
   member  = "serviceAccount:${google_service_account.build.email}"
 }
 
+resource "google_storage_bucket_iam_member" "build_gcf_sources_reader" {
+  bucket = "gcf-v2-sources-${data.google_project.current.number}-${var.region}"
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${google_service_account.build.email}"
+}
+
 resource "google_storage_bucket_iam_member" "build_source_reader" {
   bucket = google_storage_bucket.weather.name
   role   = "roles/storage.objectViewer"
