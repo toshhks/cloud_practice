@@ -12,7 +12,7 @@ docker compose up -d --build
 
 UI: http://localhost:8081, user `airflow`, password `airflow`. Host port 8081 keeps this stack off the other local Airflow on 8080.
 
-The Airflow service account key is not part of the image. After Terraform creates `weather-airflow`, save it as `.secrets/airflow-sa.json`. Compose mounts that directory read-only and sets `GOOGLE_APPLICATION_CREDENTIALS` inside the container. The UI still starts if the file is missing. GCP calls from a DAG need the real key.
+This project blocks service account JSON keys. Local Airflow uses your user login only to mint a short-lived token for `weather-airflow`. Copy `~/.config/gcloud/application_default_credentials.json` to `.secrets/adc.json` after `gcloud auth application-default login`. Compose mounts that file read-only. The UI still starts if the file is missing. GCP calls from a DAG need it.
 
 ## Operations
 

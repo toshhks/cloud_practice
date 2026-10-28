@@ -47,7 +47,7 @@ From the repository root:
 cp terraform/terraform.tfvars.example terraform/terraform.tfvars
 ```
 
-Set `project_id` in `terraform/terraform.tfvars`. Leave `force_destroy` as `false`.
+Set `project_id` in `terraform/terraform.tfvars`. Set `airflow_impersonator` to the Google account that will run Airflow, for example `user:you@gmail.com`. That account only mints tokens for `weather-airflow`. New projects block service account JSON keys, so there is no key file to download. Leave `force_destroy` as `false`.
 
 Create only the secret, then store the tomorrow.io key, then apply the rest. `terraform apply` of the whole stack fails if the secret has no version.
 
