@@ -45,17 +45,22 @@ output "bigquery_table_id" {
 }
 
 output "function_name" {
-  description = "Cloud Function name. The function is deployed in a later change."
-  value       = local.function_name
+  description = "Cloud Function name."
+  value       = google_cloudfunctions2_function.ingest.name
+}
+
+output "function_uri" {
+  description = "HTTPS URL of the ingest function. Only the scheduler service account can invoke it."
+  value       = google_cloudfunctions2_function.ingest.service_config[0].uri
 }
 
 output "scheduler_job_name" {
-  description = "Cloud Scheduler job name. The job is created in a later change."
-  value       = local.scheduler_job_name
+  description = "Cloud Scheduler job that calls the function every 10 minutes."
+  value       = google_cloud_scheduler_job.ingest.name
 }
 
 output "service_account_emails" {
-  description = "Service account emails. The scheduler account has no roles until the function exists."
+  description = "Service account emails."
   value = {
     ingest    = google_service_account.ingest.email
     scheduler = google_service_account.scheduler.email
